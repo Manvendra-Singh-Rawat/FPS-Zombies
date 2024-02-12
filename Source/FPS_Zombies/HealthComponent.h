@@ -24,5 +24,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float MaxHealth;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float CurrentHealth;
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeMaxHealth(float Health);
 };
