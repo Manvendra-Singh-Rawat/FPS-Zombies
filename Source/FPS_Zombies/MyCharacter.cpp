@@ -6,12 +6,16 @@ AMyCharacter::AMyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera SAC"));
+	CameraSpringArm->SetupAttachment(RootComponent);
+	CameraSpringArm->TargetArmLength = 450.0f;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(RootComponent);
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(Camera);
+	Camera->SetupAttachment(CameraSpringArm);
+
+	FPSSkeletalSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	FPSSkeletalSpringArm->SetupAttachment(RootComponent);
 	FPSSkeletalComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPS Mesh"));
-	FPSSkeletalComponent->SetupAttachment(SpringArm);
+	FPSSkeletalComponent->SetupAttachment(FPSSkeletalSpringArm);
 }
 
 void AMyCharacter::BeginPlay()
