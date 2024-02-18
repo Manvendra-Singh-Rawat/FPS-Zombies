@@ -32,3 +32,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+void AMyCharacter::Fire()
+{
+	// SHOOT BULLETS AND SUBTRACT(TRACK BULLET COUNT FOR RELOADING);
+}

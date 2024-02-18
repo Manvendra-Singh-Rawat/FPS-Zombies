@@ -30,4 +30,6 @@ public:
 	class USpringArmComponent* FPSSkeletalSpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* FPSSkeletalComponent;
+
+	void Fire();
 };
