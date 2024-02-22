@@ -1,6 +1,7 @@
 #include "MyCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DrawDebugHelpers.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -12,10 +13,11 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraSpringArm);
 
-	FPSSkeletalSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	FPSSkeletalSpringArm->SetupAttachment(RootComponent);
-	FPSSkeletalComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPS Mesh"));
-	FPSSkeletalComponent->SetupAttachment(FPSSkeletalSpringArm);
+	//FPSSkeletalSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	//FPSSkeletalSpringArm->SetupAttachment(RootComponent);
+	//FPSSkeletalSpringArm->TargetArmLength = 0.0f;
+	//FPSSkeletalComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FPS Mesh"));
+	//FPSSkeletalComponent->SetupAttachment(RootComponent);
 }
 
 void AMyCharacter::BeginPlay()
@@ -35,5 +37,4 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::Fire()
 {
-	// SHOOT BULLETS AND SUBTRACT(TRACK BULLET COUNT FOR RELOADING);
 }
