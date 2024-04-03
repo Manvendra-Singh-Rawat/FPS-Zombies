@@ -33,13 +33,47 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UCameraComponent* CameraComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USkeletalMeshComponent* GunMeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool isScoped;
 	FTimerHandle ADS_TimerHandler;
+	bool isSprinting;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	UAnimMontage* RifleShootingAnimMontage_HIP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	UAnimMontage* ShotgunShootingAnimMontage_HIP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	UAnimMontage* RifleShootingAnimMontage_IRONSIGHT;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	UAnimMontage* ShotgunShootingAnimMontage_IRONSIGHT;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	FVector FireEffectMuzzleLocation;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shooting")
+	FTimerHandle FiringTimerhandler;
+	FHitResult HitRes;
+	bool isHit;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
+	class UNiagaraSystem* FireEffectMuzzle;
 
 private:
-	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"))
+	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "ADS")
 	void AimDownSight(bool ShouldADS);
-	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"))
+	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "ADS")
 	bool ReturnAimDownSightStatus();
-	void ADS_InSmoothing();
+	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "Sprinting")
+	void ToggleSprint();
+
+	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	bool CanFire();
+	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	void StartFire();
+	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	void StopFire();
+	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	void Fire();
+	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	void Reload();
 };

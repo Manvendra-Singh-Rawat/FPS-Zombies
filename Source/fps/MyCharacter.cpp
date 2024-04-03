@@ -7,6 +7,9 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -28,6 +31,7 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	isScoped = false;
+	isSprinting = false;
 	
 }
 
@@ -63,10 +67,16 @@ void AMyCharacter::AimDownSight(bool ShouldADS)
 {
 	if ((ShouldADS == true) && (GetCharacterMovement()->IsFalling() == false))
 	{
+		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		isScoped = true;
 	}
 	else
 	{
+		GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->bUseControllerDesiredRotation = false;
 		isScoped = false;
 	}
 }
@@ -74,5 +84,62 @@ void AMyCharacter::AimDownSight(bool ShouldADS)
 bool AMyCharacter::ReturnAimDownSightStatus()
 {
 	return isScoped;
+}
+
+void AMyCharacter::ToggleSprint()
+{
+	if (isScoped == false)
+	{
+		if (isSprinting)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+		}
+		else
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+		}
+		isSprinting = !isSprinting;
+	}
+}
+
+bool AMyCharacter::CanFire()
+{
+	if (isScoped == true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void AMyCharacter::StartFire()
+{
+	GetWorldTimerManager().SetTimer(FiringTimerhandler, this, &AMyCharacter::Fire, 0.075f, true, 0.0f);
+}
+void AMyCharacter::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(FiringTimerhandler);
+	//UNiagaraComponent* FireVFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this->GetWorld(), FireEffectMuzzle, FireEffectMuzzleLocation);
+}
+
+void AMyCharacter::Fire()
+{
+	if (CanFire())
+	{
+		FVector StartVector = CameraComponent->GetComponentLocation();
+		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * 2000.0f);
+
+		isHit = GetWorld()->LineTraceSingleByChannel(HitRes, StartVector, EndVector, ECollisionChannel::ECC_Visibility);
+		if (isHit)
+		{
+			DrawDebugBox(this->GetWorld(), HitRes.ImpactPoint, FVector(1.5f, 1.5f, 1.5f), FColor::Yellow, false, 0.5f, 0U, 1.0f);
+		}
+	}
+}
+
+void AMyCharacter::Reload()
+{
 }
 
