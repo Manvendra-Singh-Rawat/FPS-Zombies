@@ -10,6 +10,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -116,7 +118,7 @@ bool AMyCharacter::CanFire()
 
 void AMyCharacter::StartFire()
 {
-	GetWorldTimerManager().SetTimer(FiringTimerhandler, this, &AMyCharacter::Fire, 0.075f, true, 0.0f);
+	GetWorldTimerManager().SetTimer(FiringTimerhandler, this, &AMyCharacter::Fire, 0.1f, true, 0.0f);
 }
 void AMyCharacter::StopFire()
 {
@@ -135,6 +137,19 @@ void AMyCharacter::Fire()
 		if (isHit)
 		{
 			DrawDebugBox(this->GetWorld(), HitRes.ImpactPoint, FVector(1.5f, 1.5f, 1.5f), FColor::Yellow, false, 0.5f, 0U, 1.0f);
+		}
+
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this->GetWorld(), 0);
+		ACharacter* PlayerCharacter = PlayerController->GetCharacter();
+		UAnimInstance* PlayerAnimInstance = PlayerCharacter->GetMesh()->GetAnimInstance();
+		if (RifleShootingAnimMontage != nullptr && PlayerAnimInstance != nullptr)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Working"));
+			PlayerAnimInstance->Montage_Play(RifleShootingAnimMontage);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Not working"));
 		}
 	}
 }

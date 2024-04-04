@@ -49,6 +49,8 @@ public:
 	UAnimMontage* ShotgunShootingAnimMontage_IRONSIGHT;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	FVector FireEffectMuzzleLocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	class UAnimMontage* RifleShootingAnimMontage;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shooting")
 	FTimerHandle FiringTimerhandler;
