@@ -144,12 +144,10 @@ void AMyCharacter::Fire()
 		UAnimInstance* PlayerAnimInstance = PlayerCharacter->GetMesh()->GetAnimInstance();
 		if (RifleShootingAnimMontage != nullptr && PlayerAnimInstance != nullptr)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Working"));
 			PlayerAnimInstance->Montage_Play(RifleShootingAnimMontage);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Not working"));
 		}
 	}
 }
