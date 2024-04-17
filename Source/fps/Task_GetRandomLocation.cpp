@@ -13,6 +13,7 @@ EBTNodeResult::Type UTask_GetRandomLocation::ExecuteTask(UBehaviorTreeComponent&
 	{
 		NavArea->GetRandomReachablePointInRadius(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetActorLocation(), 10000.0f, GeneratedLocation);
 
+		OwnerComponent.GetBlackboardComponent()->SetValueAsVector(FName("Random Patrol Location"), GeneratedLocation);
 		UE_LOG(LogTemp, Warning, TEXT("Generated Location: %s"), *GeneratedLocation.Location.ToString());
 		return EBTNodeResult::Succeeded;
 	}
