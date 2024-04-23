@@ -6,7 +6,6 @@
 
 EBTNodeResult::Type UBT_Task_MoveZombieRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory)
 {
-	//A#include "BehaviorTree/BlackboardComponent.h"AIController* OwnerController = Cast<AAIController>(OwnerComponent.GetAIOwner());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0)->GetWorld());
 
 	if (NavigationArea != nullptr)
