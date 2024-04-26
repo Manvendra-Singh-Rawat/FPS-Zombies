@@ -11,7 +11,7 @@ EBTNodeResult::Type UBT_Task_MoveZombieRandomLocation::ExecuteTask(UBehaviorTree
 	if (NavigationArea != nullptr)
 	{
 		NavigationArea->GetRandomReachablePointInRadius(GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation(), 5000.0f, NavigationLocation);
-		OwnerComponent.GetBlackboardComponent()->SetValueAsVector(FName("Random Move To Generated Location"), NavigationLocation);
+		OwnerComponent.GetBlackboardComponent()->SetValueAsVector(FName("RandomMoveToLocation"), NavigationLocation);
 		DrawDebugSphere(this->GetWorld(), NavigationLocation, 10.0f, 8, FColor::Yellow, false, 10.0f);
 		return EBTNodeResult::Succeeded;
 	}

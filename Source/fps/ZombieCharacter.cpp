@@ -2,7 +2,9 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "AIController.h"
 #include <Actions/PawnActionsComponent.h>
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AZombieCharacter::AZombieCharacter()
@@ -40,6 +42,25 @@ void AZombieCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Error, TEXT("is detecting player"));
-	//UE_LOG(LogTemp, Warning, TEXT("Type of Stimulus: %s"), Stimulus.Type.Name);
+	UE_LOG(LogTemp, Error, TEXT("Detected some actor"));
+
+	auto PlayerCharacterReference = UGameplayStatics::GetPlayerCharacter(this->GetWorld(), 0);
+	if (PlayerCharacterReference != nullptr)
+	{
+		auto PlayerActorReference = Cast<AActor>(PlayerCharacterReference);
+		if (SourceActor == PlayerActorReference)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Player is detected you fukin not so sneaky bastard"));
+			AController* ZombieController = this->GetController();
+			if (ZombieController != nullptr)
+			{
+				AAIController* ZombieAIController = Cast<AAIController>(ZombieController);
+				ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), SourceActor);
+			}
+		}
+	}
+	else
+	{
+		return;
+	}
 }
