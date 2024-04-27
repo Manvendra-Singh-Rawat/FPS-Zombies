@@ -6,6 +6,7 @@
 #include <Actions/PawnActionsComponent.h>
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "HealthComponent.h"
 
 AZombieCharacter::AZombieCharacter()
 {
@@ -23,6 +24,8 @@ AZombieCharacter::AZombieCharacter()
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieCharacter::isDetectedPlayer);
 
 	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), UGameplayStatics::GetPlayerPawn(this, 0));
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Comp"));
 }
 
 void AZombieCharacter::BeginPlay()

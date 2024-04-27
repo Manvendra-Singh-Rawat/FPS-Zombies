@@ -24,6 +24,9 @@ public:
 	class UAIPerceptionComponent* AIPerceptionComponent;
 	class UAISenseConfig_Sight* SightConfig;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
+	class UHealthComponent* HealthComponent;
+
 private:
 	UFUNCTION()
 	void isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus);

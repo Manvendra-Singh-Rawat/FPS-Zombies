@@ -12,20 +12,14 @@ class FPS_API AMyCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AMyCharacter();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -59,6 +53,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* FireEffectMuzzle;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
+	//class UHealthComponent* HealthComponent;
 
 private:
 	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "ADS")
