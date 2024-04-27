@@ -22,7 +22,6 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	class UAIPerceptionComponent* AIPerceptionComponent;
-	//class UAISenseConfig* SightConfig;
 	class UAISenseConfig_Sight* SightConfig;
 
 private:

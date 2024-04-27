@@ -10,7 +10,7 @@
 AZombieCharacter::AZombieCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception Component"));
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sense Config"));
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 	SightConfig->SightRadius = 3000.0f;
@@ -42,15 +42,12 @@ void AZombieCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Error, TEXT("Detected some actor"));
-
-	auto PlayerCharacterReference = UGameplayStatics::GetPlayerCharacter(this->GetWorld(), 0);
+	ACharacter* PlayerCharacterReference = UGameplayStatics::GetPlayerCharacter(this->GetWorld(), 0);
 	if (PlayerCharacterReference != nullptr)
 	{
-		auto PlayerActorReference = Cast<AActor>(PlayerCharacterReference);
+		AActor* PlayerActorReference = Cast<AActor>(PlayerCharacterReference);
 		if (SourceActor == PlayerActorReference)
 		{
-			UE_LOG(LogTemp, Error, TEXT("Player is detected you fukin not so sneaky bastard"));
 			AController* ZombieController = this->GetController();
 			if (ZombieController != nullptr)
 			{
