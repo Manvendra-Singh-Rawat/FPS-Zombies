@@ -55,6 +55,15 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 				ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), SourceActor);
 			}
 		}
+		else
+		{
+			AController* ZombieController = this->GetController();
+			if (ZombieController != nullptr)
+			{
+				AAIController* ZombieAIController = Cast<AAIController>(ZombieController);
+				ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), nullptr);
+			}
+		}
 	}
 	else
 	{
