@@ -26,6 +26,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
 	class UHealthComponent* HealthComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	class UWidgetComponent* HealthBarWidget;
 
 private:
 	UFUNCTION()

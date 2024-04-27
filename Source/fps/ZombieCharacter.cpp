@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "HealthComponent.h"
+#include "Components/WidgetComponent.h"
 
 AZombieCharacter::AZombieCharacter()
 {
@@ -26,6 +27,9 @@ AZombieCharacter::AZombieCharacter()
 	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), UGameplayStatics::GetPlayerPawn(this, 0));
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Comp"));
+
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Health Widget Comp"));
+	HealthBarWidget->SetupAttachment(RootComponent);
 }
 
 void AZombieCharacter::BeginPlay()
