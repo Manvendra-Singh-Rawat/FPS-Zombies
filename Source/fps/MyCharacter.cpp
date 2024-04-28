@@ -129,6 +129,20 @@ void AMyCharacter::Fire()
 		if (isHit)
 		{
 			DrawDebugBox(this->GetWorld(), HitRes.ImpactPoint, FVector(1.5f, 1.5f, 1.5f), FColor::Yellow, false, 0.5f, 0U, 1.0f);
+
+			AActor* VictimActor = HitRes.GetActor();
+			USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
+			if (VictimSkeletalMeshComponent != nullptr)
+			{
+				if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
+				{
+					UE_LOG(LogTemp, Error, TEXT("Victim Zombie found"));
+
+					TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
+					AController* PlayerInstigator = GetInstigator()->GetController();
+					UGameplayStatics::ApplyDamage(VictimActor, 25.0f, PlayerInstigator, this, GunDamageType);
+				}
+			}
 		}
 
 		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this->GetWorld(), 0);
