@@ -107,7 +107,6 @@ bool AMyCharacter::CanFire()
 		return false;
 	}
 }
-
 void AMyCharacter::StartFire()
 {
 	GetWorldTimerManager().SetTimer(FiringTimerhandler, this, &AMyCharacter::Fire, 0.1f, true, 0.0f);
@@ -115,29 +114,26 @@ void AMyCharacter::StartFire()
 void AMyCharacter::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(FiringTimerhandler);
-	//UNiagaraComponent* FireVFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this->GetWorld(), FireEffectMuzzle, FireEffectMuzzleLocation);
 }
 
 void AMyCharacter::Fire()
 {
 	if (CanFire())
 	{
+		//UNiagaraComponent* FireVFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this->GetWorld(), MuzzleFlash_VFX, FireEffectMuzzleLocation);
+		//PlayParticleEffect();
 		FVector StartVector = CameraComponent->GetComponentLocation();
 		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * 2000.0f);
 
 		isHit = GetWorld()->LineTraceSingleByChannel(HitRes, StartVector, EndVector, ECollisionChannel::ECC_Visibility);
 		if (isHit)
 		{
-			DrawDebugBox(this->GetWorld(), HitRes.ImpactPoint, FVector(1.5f, 1.5f, 1.5f), FColor::Yellow, false, 0.5f, 0U, 1.0f);
-
 			AActor* VictimActor = HitRes.GetActor();
 			USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
 			if (VictimSkeletalMeshComponent != nullptr)
 			{
 				if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
 				{
-					UE_LOG(LogTemp, Error, TEXT("Victim Zombie found"));
-
 					TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
 					AController* PlayerInstigator = GetInstigator()->GetController();
 					UGameplayStatics::ApplyDamage(VictimActor, 25.0f, PlayerInstigator, this, GunDamageType);

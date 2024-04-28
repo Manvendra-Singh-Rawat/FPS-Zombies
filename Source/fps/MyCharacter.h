@@ -46,13 +46,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	class UAnimMontage* RifleShootingAnimMontage;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Shooting")
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;
 	bool isHit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
-	class UNiagaraSystem* FireEffectMuzzle;
+	class UNiagaraSystem* MuzzleFlash_VFX;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
 	//class UHealthComponent* HealthComponent;
@@ -75,4 +74,8 @@ private:
 	void Fire();
 	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
 	void Reload();
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void PlayParticleEffect();
 };
