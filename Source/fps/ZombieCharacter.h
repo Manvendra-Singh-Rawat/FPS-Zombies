@@ -32,4 +32,7 @@ public:
 private:
 	UFUNCTION()
 	void isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus);
+
+public:
+	void PlayDeadPart();
 };

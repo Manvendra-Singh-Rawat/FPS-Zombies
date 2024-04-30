@@ -77,3 +77,18 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 		return;
 	}
 }
+
+void AZombieCharacter::PlayDeadPart()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Zombie Character died"));
+	auto asdf = GetComponentByClass<USkeletalMeshComponent>();
+	if (asdf != nullptr)
+	{
+		asdf->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+
+		// PLAY VFX AND SFX
+	}
+
+	// TODO
+	// DESTROY THE AACTOR AFTER 5 SECONDS
+}

@@ -76,6 +76,5 @@ private:
 	void Reload();
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void PlayParticleEffect();
+	void PlayDeadPart();
 };

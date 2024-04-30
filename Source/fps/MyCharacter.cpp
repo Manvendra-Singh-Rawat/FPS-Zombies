@@ -9,6 +9,7 @@
 #include "NiagaraComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
+#include "HealthComponent.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -121,7 +122,6 @@ void AMyCharacter::Fire()
 	if (CanFire())
 	{
 		//UNiagaraComponent* FireVFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this->GetWorld(), MuzzleFlash_VFX, FireEffectMuzzleLocation);
-		//PlayParticleEffect();
 		FVector StartVector = CameraComponent->GetComponentLocation();
 		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * 2000.0f);
 
@@ -158,3 +158,7 @@ void AMyCharacter::Reload()
 {
 }
 
+void AMyCharacter::PlayDeadPart()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player died T_T"));
+}

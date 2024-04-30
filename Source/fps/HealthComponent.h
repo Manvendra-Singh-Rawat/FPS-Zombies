@@ -23,4 +23,9 @@ public:
 	float MaxHealth;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float CurrentHealth;
+	UFUNCTION()
+	void ActorOnTakeAnyDamage(AActor* DamagedActor, float DamageReceived, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	class AMyGameModeBase* MyCustomGameMode;
 };
