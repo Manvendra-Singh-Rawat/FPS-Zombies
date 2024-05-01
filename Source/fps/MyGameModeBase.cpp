@@ -2,17 +2,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "ZombieCharacter.h"
 #include "MyCharacter.h"
+#include "Math/UnrealMathUtility.h"
 
 void AMyGameModeBase::AGameModeBase()
 {
-
+	CurrentWaveNumber = 0;
 }
 
 void AMyGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), AZombieCharacter::StaticClass(), ZombieActorList);
 }
 
 void AMyGameModeBase::AnActorJustDied(AActor* DiedActor)
@@ -29,4 +28,14 @@ void AMyGameModeBase::AnActorJustDied(AActor* DiedActor)
 		UE_LOG(LogTemp, Warning, TEXT("Zombies count: %d"), ZombieActorList.Num());
 		ZombieCharacter->PlayDeadPart();
 	}
+}
+
+void AMyGameModeBase::AddZombiesToZombieActorList(AZombieCharacter* ZombieCharacter)
+{
+	ZombieActorList.Add(ZombieCharacter);
+}
+
+int AMyGameModeBase::GetNumberOfZombiesAlive()
+{
+	return ZombieActorList.Num();
 }

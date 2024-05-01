@@ -121,7 +121,6 @@ void AMyCharacter::Fire()
 {
 	if (CanFire())
 	{
-		//UNiagaraComponent* FireVFX = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this->GetWorld(), MuzzleFlash_VFX, FireEffectMuzzleLocation);
 		FVector StartVector = CameraComponent->GetComponentLocation();
 		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * 2000.0f);
 

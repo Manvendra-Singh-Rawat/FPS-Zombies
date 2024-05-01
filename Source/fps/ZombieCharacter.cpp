@@ -81,6 +81,7 @@ void AZombieCharacter::PlayDeadPart()
 
 	// TODO
 	// DESTROY THE AACTOR AFTER 5 SECONDS
+	Destroy();
 }
 
 AAIController* AZombieCharacter::ReturnZombieAIController()

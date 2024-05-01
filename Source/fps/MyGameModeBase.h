@@ -16,8 +16,19 @@ private:
 
 private:
 	TArray<AActor*> ZombieActorList;
+	TArray<AActor*> SpawnActorList;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning");
+	TSubclassOf<class AZombieCharacter> Zombies;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wave");
+	int CurrentWaveNumber;
 
 public:
 	UFUNCTION()
 	void AnActorJustDied(AActor* DiedActor);
+
+	void AddZombiesToZombieActorList(class AZombieCharacter* ZombieCharacter);
+	int GetNumberOfZombiesAlive();
 };
