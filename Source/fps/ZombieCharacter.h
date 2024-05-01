@@ -35,4 +35,6 @@ private:
 
 public:
 	void PlayDeadPart();
+	class AAIController* ReturnZombieAIController();
+	//void UpdateBlackboardValues()
 };

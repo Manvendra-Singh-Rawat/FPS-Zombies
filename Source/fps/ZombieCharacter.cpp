@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "HealthComponent.h"
 #include "Components/WidgetComponent.h"
+#include "MyCharacter.h"
 
 AZombieCharacter::AZombieCharacter()
 {
@@ -49,32 +50,21 @@ void AZombieCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus)
 {
-	ACharacter* PlayerCharacterReference = UGameplayStatics::GetPlayerCharacter(this->GetWorld(), 0);
-	if (PlayerCharacterReference != nullptr)
+	if (Cast<AMyCharacter>(SourceActor))
 	{
-		AActor* PlayerActorReference = Cast<AActor>(PlayerCharacterReference);
-		if (SourceActor == PlayerActorReference)
+		AAIController* ZombieAIController = ReturnZombieAIController();
+		if (ZombieAIController != nullptr)
 		{
-			AController* ZombieController = this->GetController();
-			if (ZombieController != nullptr)
-			{
-				AAIController* ZombieAIController = Cast<AAIController>(ZombieController);
-				ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), SourceActor);
-			}
-		}
-		else
-		{
-			AController* ZombieController = this->GetController();
-			if (ZombieController != nullptr)
-			{
-				AAIController* ZombieAIController = Cast<AAIController>(ZombieController);
-				ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), nullptr);
-			}
+			ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), SourceActor);
 		}
 	}
 	else
 	{
-		return;
+		AAIController* ZombieAIController = ReturnZombieAIController();
+		if (ZombieAIController != nullptr)
+		{
+			ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), nullptr);
+		}
 	}
 }
 
@@ -91,4 +81,18 @@ void AZombieCharacter::PlayDeadPart()
 
 	// TODO
 	// DESTROY THE AACTOR AFTER 5 SECONDS
+}
+
+AAIController* AZombieCharacter::ReturnZombieAIController()
+{
+	auto* ZombieControllers = this->GetController();
+	auto ZombieAIController = Cast<AAIController>(ZombieControllers);
+	if (ZombieAIController != nullptr)
+	{
+		return ZombieAIController;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
