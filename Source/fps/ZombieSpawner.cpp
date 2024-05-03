@@ -13,20 +13,23 @@ AZombieSpawner::AZombieSpawner()
 void AZombieSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
 	UGameplayStatics::GetAllActorsOfClassWithTag(this->GetWorld(), AActor::StaticClass(), TEXT("SpawnZombieActorPoints"), SpawnPointsList);
-	SpawnZombiesAtSpawnPoint();
-	UE_LOG(LogTemp, Error, TEXT("Count: %d"), SpawnPointsList.Num());
-	
 }
 
-void AZombieSpawner::SpawnZombiesAtSpawnPoint()
+void AZombieSpawner::SpawnZombiesAtSpawnPoint(int ZombieCount)
 {
-	for (int i = 0; i < 10; i++)
+	CountOfZombiesToSpawn = ZombieCount;
+	GetWorld()->GetTimerManager().SetTimer(ZombieWaveSpawnTimerHandler, this, &AZombieSpawner::SpawnZombies, 5.0f, false, 5.0f);
+}
+
+void AZombieSpawner::SpawnZombies()
+{
+	for (int i = 0; i < CountOfZombiesToSpawn; i++)
 	{
-		int RandomSpawnNumber = FMath::RandRange(0, SpawnPointsList.Num());
-		AZombieCharacter* Zombie = GetWorld()->SpawnActor<AZombieCharacter>(ZombieCharacterSubClass, SpawnPointsList[0]->GetActorLocation(), SpawnPointsList[0]->GetActorRotation(), ZombieSpawnParameter);
+		int RandomSpawnNumber = FMath::RandRange(0, SpawnPointsList.Num() - 1);
+		AZombieCharacter* Zombie = GetWorld()->SpawnActor<AZombieCharacter>(ZombieCharacterSubClass, SpawnPointsList[RandomSpawnNumber]->GetActorLocation(), SpawnPointsList[RandomSpawnNumber]->GetActorRotation(), ZombieSpawnParameter);
 		Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this->GetWorld()))->AddZombiesToZombieActorList(Zombie);
-		UE_LOG(LogTemp, Error, TEXT("Zombie count: %d"), Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this->GetWorld()))->GetNumberOfZombiesAlive());
+		UE_LOG(LogTemp, Warning, TEXT("ZOMBIE: Zombie count: %d"), Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this->GetWorld()))->GetNumberOfZombiesAlive());
 	}
+	GetWorld()->GetTimerManager().ClearTimer(ZombieWaveSpawnTimerHandler);
 }

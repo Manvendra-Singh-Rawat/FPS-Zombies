@@ -28,8 +28,7 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	isScoped = false;
-	isSprinting = false;
-	
+	isSprinting = false;	
 }
 
 void AMyCharacter::Tick(float DeltaTime)

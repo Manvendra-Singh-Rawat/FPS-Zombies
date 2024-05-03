@@ -22,5 +22,11 @@ public:
 	FActorSpawnParameters ZombieSpawnParameter;
 
 	UFUNCTION()
-	void SpawnZombiesAtSpawnPoint();
+	void SpawnZombiesAtSpawnPoint(int ZombieCount);
+
+private:
+	FTimerHandle ZombieWaveSpawnTimerHandler;
+
+	void SpawnZombies();
+	int CountOfZombiesToSpawn;
 };

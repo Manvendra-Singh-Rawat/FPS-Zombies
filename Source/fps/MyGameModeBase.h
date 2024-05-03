@@ -16,7 +16,7 @@ private:
 
 private:
 	TArray<AActor*> ZombieActorList;
-	TArray<AActor*> SpawnActorList;
+	class AZombieSpawner* ZombieSpawnerReference;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning");
@@ -24,6 +24,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wave");
 	int CurrentWaveNumber;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wave");
+	int ZombieCountIncrementPerWave;
 
 public:
 	UFUNCTION()
@@ -31,4 +33,5 @@ public:
 
 	void AddZombiesToZombieActorList(class AZombieCharacter* ZombieCharacter);
 	int GetNumberOfZombiesAlive();
+	void MakeZombieSpawnerSpawnZombies(int ZombieCount);
 };
