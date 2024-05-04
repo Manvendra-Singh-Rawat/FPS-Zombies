@@ -15,18 +15,18 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
+private:
+	int SpawnZombieCount;
+	class AMyGameModeBase* GameMode;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Spawn", meta = (AllowPrivateAccess = "true"));
 	TSubclassOf<class AZombieCharacter> ZombieCharacterSubClass;
 	TArray<AActor*> SpawnPointsList;
 	FActorSpawnParameters ZombieSpawnParameter;
-
-	UFUNCTION()
-	void SpawnZombiesAtSpawnPoint(int ZombieCount);
-
-private:
 	FTimerHandle ZombieWaveSpawnTimerHandler;
 
+public:
+	void InitiateZombieSpawn(int ZombieCount);
+
+private:
 	void SpawnZombies();
-	int CountOfZombiesToSpawn;
 };

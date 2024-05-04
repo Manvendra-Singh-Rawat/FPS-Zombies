@@ -7,8 +7,9 @@
 
 void AMyGameModeBase::AGameModeBase()
 {
-	CurrentWaveNumber = 0;
-	ZombieCountIncrementPerWave = 5;
+	CurrentWaveNumber = 1;
+	ZombieSpawnCount = 5;
+	ZombieIncrementNumber = 2;
 }
 
 void AMyGameModeBase::BeginPlay()
@@ -19,15 +20,15 @@ void AMyGameModeBase::BeginPlay()
 	if (!TempSpawner.IsEmpty())
 	{
 		ZombieSpawnerReference = Cast<AZombieSpawner>(TempSpawner[0]);
-		MakeZombieSpawnerSpawnZombies(ZombieCountIncrementPerWave);
+		MakeZombieSpawnerSpawnZombies(ZombieSpawnCount);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ZombieSpawnerReference is null"));
+		UE_LOG(LogTemp, Error, TEXT("ZombieSpawnerReference is null"));
 	}
 }
 
-void AMyGameModeBase::AnActorJustDied(AActor* DiedActor)
+void AMyGameModeBase::ActorDied(AActor* DiedActor)
 {
 	if (Cast<AMyCharacter>(DiedActor) != nullptr)
 	{
@@ -38,28 +39,23 @@ void AMyGameModeBase::AnActorJustDied(AActor* DiedActor)
 	{
 		AZombieCharacter* ZombieCharacter = Cast<AZombieCharacter>(DiedActor);
 		ZombieActorList.Remove(DiedActor);
-		UE_LOG(LogTemp, Warning, TEXT("Zombies count: %d"), ZombieActorList.Num());
 		ZombieCharacter->PlayDeadPart();
 
 		if (ZombieActorList.IsEmpty())
 		{
-			ZombieCountIncrementPerWave += 2;
-			MakeZombieSpawnerSpawnZombies(ZombieCountIncrementPerWave);
+			CurrentWaveNumber++;
+			ZombieSpawnCount += ZombieIncrementNumber;
+			MakeZombieSpawnerSpawnZombies(ZombieSpawnCount);
 		}
 	}
 }
 
-void AMyGameModeBase::AddZombiesToZombieActorList(AZombieCharacter* ZombieCharacter)
+void AMyGameModeBase::CountZombiesForThisWave()
 {
-	ZombieActorList.Add(ZombieCharacter);
-}
-
-int AMyGameModeBase::GetNumberOfZombiesAlive()
-{
-	return ZombieActorList.Num();
+	UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), AZombieCharacter::StaticClass(), ZombieActorList);
 }
 
 void AMyGameModeBase::MakeZombieSpawnerSpawnZombies(int ZombieCount)
 {
-	ZombieSpawnerReference->SpawnZombiesAtSpawnPoint(ZombieCount);
+	ZombieSpawnerReference->InitiateZombieSpawn(ZombieCount);
 }

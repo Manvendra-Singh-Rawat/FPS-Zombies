@@ -34,17 +34,13 @@ public:
 	bool isSprinting;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	UAnimMontage* RifleShootingAnimMontage_HIP;
+	UAnimMontage* RifleShootingAnimMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	UAnimMontage* ShotgunShootingAnimMontage_HIP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	UAnimMontage* RifleShootingAnimMontage_IRONSIGHT;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	UAnimMontage* ShotgunShootingAnimMontage_IRONSIGHT;
+	UAnimMontage* ShotgunShootingAnimMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	FVector FireEffectMuzzleLocation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	class UAnimMontage* RifleShootingAnimMontage;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	//class UAnimMontage* RifleShootingAnimMontage;
 
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;

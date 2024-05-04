@@ -18,14 +18,14 @@ protected:
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true"));
 	float MaxHealth;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health", meta = (AllowPrivateAccess = "true"));
 	float CurrentHealth;
+	class AMyGameModeBase* MyCustomGameMode;
+
+public:
 	UFUNCTION()
 	void ActorOnTakeAnyDamage(AActor* DamagedActor, float DamageReceived, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	class AMyGameModeBase* MyCustomGameMode;
 };

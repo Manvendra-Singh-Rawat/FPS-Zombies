@@ -37,6 +37,6 @@ void UHealthComponent::ActorOnTakeAnyDamage(AActor* DamagedActor, float DamageRe
 	{
 		CurrentHealth = 0.0f;
 		MyCustomGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this->GetWorld()));
-		MyCustomGameMode->AnActorJustDied(DamagedActor);
+		MyCustomGameMode->ActorDied(DamagedActor);
 	}
 }
