@@ -22,6 +22,12 @@ AMyCharacter::AMyCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArm);
 	CameraComponent->FieldOfView = 90.0f;
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Comp"));
+
+	RifleDamage = 25.0f;
+	RifleRangeUnits = 2500.0f;
+	RifleDamageDropOffStartRangeUnits = 700.0f;
 }
 
 void AMyCharacter::BeginPlay()
@@ -121,20 +127,25 @@ void AMyCharacter::Fire()
 	if (CanFire())
 	{
 		FVector StartVector = CameraComponent->GetComponentLocation();
-		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * 2000.0f);
+		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * RifleRangeUnits);
 
 		isHit = GetWorld()->LineTraceSingleByChannel(HitRes, StartVector, EndVector, ECollisionChannel::ECC_Visibility);
 		if (isHit)
 		{
 			AActor* VictimActor = HitRes.GetActor();
-			USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
-			if (VictimSkeletalMeshComponent != nullptr)
+			if (VictimActor->ActorHasTag(TEXT("Zombie")))
 			{
-				if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
+				double asdf = DropOffDamage(GetActorLocation(), HitRes.ImpactPoint);
+				UE_LOG(LogTemp, Warning, TEXT("Damage value: %f"), asdf);
+				USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
+				if (VictimSkeletalMeshComponent != nullptr)
 				{
-					TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
-					AController* PlayerInstigator = GetInstigator()->GetController();
-					UGameplayStatics::ApplyDamage(VictimActor, 25.0f, PlayerInstigator, this, GunDamageType);
+					if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
+					{
+						TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
+						AController* PlayerInstigator = GetInstigator()->GetController();
+						UGameplayStatics::ApplyDamage(VictimActor, asdf, PlayerInstigator, this, GunDamageType);
+					}
 				}
 			}
 		}
@@ -146,9 +157,22 @@ void AMyCharacter::Fire()
 		{
 			PlayerAnimInstance->Montage_Play(RifleShootingAnimMontage);
 		}
-		else
-		{
-		}
+	}
+}
+
+double AMyCharacter::DropOffDamage(FVector PlayerLocation, FVector EnemyPosition)
+{
+	double DistanceBetweenActors = (FVector::Distance(EnemyPosition, PlayerLocation));
+	if (DistanceBetweenActors > RifleDamageDropOffStartRangeUnits)
+	{
+		double Distance = DistanceBetweenActors - RifleDamageDropOffStartRangeUnits;
+		double DistancePercentage = ((Distance / (RifleRangeUnits - RifleDamageDropOffStartRangeUnits)) * 100) / 2;
+		double ScaledDamage = RifleDamage - ((RifleDamage * DistancePercentage) / 100);
+		return floor(ScaledDamage);
+	}
+	else
+	{
+		return RifleDamage;
 	}
 }
 

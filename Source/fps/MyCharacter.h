@@ -39,8 +39,15 @@ public:
 	UAnimMontage* ShotgunShootingAnimMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	FVector FireEffectMuzzleLocation;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	//class UAnimMontage* RifleShootingAnimMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+
+	float RifleDamage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
+	float RifleRangeUnits;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
+	float RifleDamageDropOffStartRangeUnits;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
+	float RifleDamageDropOffPercentage = 50.0f;
 
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;
@@ -49,8 +56,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* MuzzleFlash_VFX;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
-	//class UHealthComponent* HealthComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
+	class UHealthComponent* HealthComponent;
 
 private:
 	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "ADS")
@@ -60,14 +67,14 @@ private:
 	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "Sprinting")
 	void ToggleSprint();
 
-	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
 	bool CanFire();
 	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
 	void StartFire();
 	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
 	void StopFire();
-	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
+	UFUNCTION()
 	void Fire();
+	double DropOffDamage(FVector PlayerLocation, FVector EnemyPosition);
 	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
 	void Reload();
 
