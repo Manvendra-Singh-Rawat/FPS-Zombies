@@ -133,19 +133,16 @@ void AMyCharacter::Fire()
 		if (isHit)
 		{
 			AActor* VictimActor = HitRes.GetActor();
-			if (VictimActor->ActorHasTag(TEXT("Zombie")))
+			double Damage = DropOffDamage(GetActorLocation(), HitRes.ImpactPoint);
+			UE_LOG(LogTemp, Warning, TEXT("Damage value: %f"), Damage);
+			USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
+			if (VictimSkeletalMeshComponent != nullptr)
 			{
-				double asdf = DropOffDamage(GetActorLocation(), HitRes.ImpactPoint);
-				UE_LOG(LogTemp, Warning, TEXT("Damage value: %f"), asdf);
-				USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
-				if (VictimSkeletalMeshComponent != nullptr)
+				if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
 				{
-					if (VictimSkeletalMeshComponent->ComponentHasTag(TEXT("Zombie")))
-					{
-						TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
-						AController* PlayerInstigator = GetInstigator()->GetController();
-						UGameplayStatics::ApplyDamage(VictimActor, asdf, PlayerInstigator, this, GunDamageType);
-					}
+					TSubclassOf<UDamageType> GunDamageType = UDamageType::StaticClass();
+					AController* PlayerInstigator = GetInstigator()->GetController();
+					UGameplayStatics::ApplyDamage(VictimActor, Damage, PlayerInstigator, this, GunDamageType);
 				}
 			}
 		}
