@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
 	float RifleDamageDropOffPercentage = 50.0f;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	//UStaticMeshComponent* RifleMan
+
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;
 	bool isHit;
