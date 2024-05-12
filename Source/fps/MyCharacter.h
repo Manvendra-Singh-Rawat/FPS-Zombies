@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ReloadState_ENUM.h"
 #include "MyCharacter.generated.h"
 
 UCLASS()
@@ -20,6 +21,13 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Shooting")
+	USkeletalMeshComponent* BodySkeletalMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Shooting")
+	USkeletalMeshComponent* GunSkeletalMesh;
+	USceneComponent* MagazineComponent;
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -48,19 +56,22 @@ public:
 	float RifleDamageDropOffStartRangeUnits;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
 	float RifleDamageDropOffPercentage = 50.0f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	UStaticMeshComponent* RifleMagazine;
+	TSubclassOf<AActor> MagazineActor;
+	AActor* MagazineActorRef;
 
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;
 	bool isHit;
+	bool isReloading;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* MuzzleFlash_VFX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health System")
 	class UHealthComponent* HealthComponent;
+
+	const E_ReloadState ReloadState {E_ReloadState::ReloadState_DetachMagazine};
 
 private:
 	UFUNCTION(BlueprintCallable, meta = (AllowPrivateAccess = "true"), Category = "ADS")
@@ -79,7 +90,7 @@ private:
 	void Fire();
 	double DropOffDamage(FVector PlayerLocation, FVector EnemyPosition);
 	UFUNCTION(BlueprintCallable, meta = (AlluwPrivateAccess = "true"), Category = "Shooting")
-	void Reload();
+	void Reload(E_ReloadState ReceivedReloadState);
 
 public:
 	void PlayDeadPart();

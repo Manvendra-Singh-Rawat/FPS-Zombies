@@ -10,6 +10,8 @@
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimMontage.h"
 #include "HealthComponent.h"
+#include "Engine/EngineTypes.h"
+#include "ReloadState_ENUM.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -28,13 +30,15 @@ AMyCharacter::AMyCharacter()
 	RifleDamage = 25.0f;
 	RifleRangeUnits = 2500.0f;
 	RifleDamageDropOffStartRangeUnits = 700.0f;
+
+	isReloading = false;
 }
 
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	isScoped = false;
-	isSprinting = false;	
+	isSprinting = false;
 }
 
 void AMyCharacter::Tick(float DeltaTime)
@@ -173,8 +177,50 @@ double AMyCharacter::DropOffDamage(FVector PlayerLocation, FVector EnemyPosition
 	}
 }
 
-void AMyCharacter::Reload()
+void AMyCharacter::Reload(E_ReloadState ReceivedReloadState)
 {
+	switch (ReceivedReloadState)
+	{
+		case E_ReloadState::ReloadState_DetachMagazine:
+			if (BodySkeletalMesh != nullptr)
+			{
+				if (GunSkeletalMesh != nullptr)
+				{
+					MagazineComponent = GunSkeletalMesh->GetChildComponent(0);
+					MagazineComponent->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
+				}
+			}
+			break;
+
+		case E_ReloadState::ReloadState_DropMagazine:
+			if (BodySkeletalMesh != nullptr)
+			{
+				MagazineComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+				UStaticMeshComponent* asdf = Cast<UStaticMeshComponent>(MagazineComponent->GetChildComponent(0));
+				asdf->SetSimulatePhysics(true);
+			}
+			break;
+
+		case E_ReloadState::ReloadState_SpawnMagazine:
+			if (BodySkeletalMesh != nullptr)
+			{
+				FActorSpawnParameters SpawnParameter;
+				SpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+				MagazineActorRef = GetWorld()->SpawnActor<AActor>(MagazineActor, BodySkeletalMesh->GetSocketTransform(TEXT("CustomMagazine")), SpawnParameter);
+				MagazineActorRef->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
+			}
+			break;
+
+		case E_ReloadState::ReloadState_AttachMagazine:
+			if (BodySkeletalMesh != nullptr)
+			{
+				if (GunSkeletalMesh != nullptr)
+				{
+					MagazineActorRef->AttachToComponent(GunSkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("CustomMagazine"));
+				}
+			}
+			break;
+	}
 }
 
 void AMyCharacter::PlayDeadPart()
