@@ -138,7 +138,6 @@ void AMyCharacter::Fire()
 		{
 			AActor* VictimActor = HitRes.GetActor();
 			double Damage = DropOffDamage(GetActorLocation(), HitRes.ImpactPoint);
-			UE_LOG(LogTemp, Warning, TEXT("Damage value: %f"), Damage);
 			USkeletalMeshComponent* VictimSkeletalMeshComponent = VictimActor->GetComponentByClass<USkeletalMeshComponent>();
 			if (VictimSkeletalMeshComponent != nullptr)
 			{
@@ -181,45 +180,45 @@ void AMyCharacter::Reload(E_ReloadState ReceivedReloadState)
 {
 	switch (ReceivedReloadState)
 	{
-		case E_ReloadState::ReloadState_DetachMagazine:
-			if (BodySkeletalMesh != nullptr)
+	case E_ReloadState::ReloadState_DetachMagazine:
+		if (BodySkeletalMesh != nullptr)
+		{
+			if (GunSkeletalMesh != nullptr)
 			{
-				if (GunSkeletalMesh != nullptr)
-				{
-					MagazineComponent = GunSkeletalMesh->GetChildComponent(0);
-					MagazineComponent->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
-				}
+				MagazineComponent = GunSkeletalMesh->GetChildComponent(0);
+				MagazineComponent->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
 			}
-			break;
+		}
+		break;
 
-		case E_ReloadState::ReloadState_DropMagazine:
-			if (BodySkeletalMesh != nullptr)
-			{
-				MagazineComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-				UStaticMeshComponent* asdf = Cast<UStaticMeshComponent>(MagazineComponent->GetChildComponent(0));
-				asdf->SetSimulatePhysics(true);
-			}
-			break;
+	case E_ReloadState::ReloadState_DropMagazine:
+		if (BodySkeletalMesh != nullptr)
+		{
+			MagazineComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+			UStaticMeshComponent* asdf = Cast<UStaticMeshComponent>(MagazineComponent->GetChildComponent(0));
+			asdf->SetSimulatePhysics(true);
+		}
+		break;
 
-		case E_ReloadState::ReloadState_SpawnMagazine:
-			if (BodySkeletalMesh != nullptr)
-			{
-				FActorSpawnParameters SpawnParameter;
-				SpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-				MagazineActorRef = GetWorld()->SpawnActor<AActor>(MagazineActor, BodySkeletalMesh->GetSocketTransform(TEXT("CustomMagazine")), SpawnParameter);
-				MagazineActorRef->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
-			}
-			break;
+	case E_ReloadState::ReloadState_SpawnMagazine:
+		if (BodySkeletalMesh != nullptr)
+		{
+			FActorSpawnParameters SpawnParameter;
+			SpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+			MagazineActorRef = GetWorld()->SpawnActor<AActor>(MagazineActor, BodySkeletalMesh->GetSocketTransform(TEXT("CustomMagazine")), SpawnParameter);
+			MagazineActorRef->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
+		}
+		break;
 
-		case E_ReloadState::ReloadState_AttachMagazine:
-			if (BodySkeletalMesh != nullptr)
+	case E_ReloadState::ReloadState_AttachMagazine:
+		if (BodySkeletalMesh != nullptr)
+		{
+			if (GunSkeletalMesh != nullptr)
 			{
-				if (GunSkeletalMesh != nullptr)
-				{
-					MagazineActorRef->AttachToComponent(GunSkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("CustomMagazine"));
-				}
+				MagazineActorRef->AttachToComponent(GunSkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("CustomMagazine"));
 			}
-			break;
+		}
+		break;
 	}
 }
 
