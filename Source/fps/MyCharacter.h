@@ -40,6 +40,11 @@ public:
 	bool isScoped;
 	FTimerHandle ADS_TimerHandler;
 	bool isSprinting;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shooting")
+	int CurrentBullets;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shooting")
+	int MaxBullets;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	UAnimMontage* RifleShootingAnimMontage;
@@ -48,7 +53,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
 	FVector FireEffectMuzzleLocation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-
 	float RifleDamage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Shooting")
 	float RifleRangeUnits;
@@ -63,6 +67,7 @@ public:
 	FTimerHandle FiringTimerhandler;
 	FHitResult HitRes;
 	bool isHit;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shooting")
 	bool isReloading;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
@@ -94,4 +99,6 @@ private:
 
 public:
 	void PlayDeadPart();
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateBulletCountUI();
 };

@@ -7,7 +7,7 @@
 
 void AMyGameModeBase::AGameModeBase()
 {
-	CurrentWaveNumber = 1;
+	CurrentWaveNumber = 0;
 	ZombieSpawnCount = 5;
 	ZombieIncrementNumber = 2;
 }
@@ -43,7 +43,6 @@ void AMyGameModeBase::ActorDied(AActor* DiedActor)
 
 		if (ZombieActorList.IsEmpty())
 		{
-			CurrentWaveNumber++;
 			ZombieSpawnCount += ZombieIncrementNumber;
 			MakeZombieSpawnerSpawnZombies(ZombieSpawnCount);
 		}
@@ -53,6 +52,8 @@ void AMyGameModeBase::ActorDied(AActor* DiedActor)
 void AMyGameModeBase::CountZombiesForThisWave()
 {
 	UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), AZombieCharacter::StaticClass(), ZombieActorList);
+	CurrentWaveNumber++;
+	ChangeWaveNumberForPlayer();
 }
 
 void AMyGameModeBase::MakeZombieSpawnerSpawnZombies(int ZombieCount)

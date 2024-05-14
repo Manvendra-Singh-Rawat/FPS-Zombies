@@ -32,6 +32,9 @@ public:
 	void ActorDied(AActor* DiedActor);
 	void CountZombiesForThisWave();
 
+	UFUNCTION(BlueprintImplementableEvent, meta = (AllowPrivateAccess = "true"))
+	void ChangeWaveNumberForPlayer();
+
 private:
 	void MakeZombieSpawnerSpawnZombies(int ZombieCount);
 };

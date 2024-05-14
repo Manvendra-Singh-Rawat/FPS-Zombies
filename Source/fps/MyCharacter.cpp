@@ -27,6 +27,8 @@ AMyCharacter::AMyCharacter()
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Comp"));
 
+	MaxBullets = 30;
+	CurrentBullets = MaxBullets;
 	RifleDamage = 25.0f;
 	RifleRangeUnits = 2500.0f;
 	RifleDamageDropOffStartRangeUnits = 700.0f;
@@ -39,6 +41,8 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	isScoped = false;
 	isSprinting = false;
+
+	UpdateBulletCountUI();
 }
 
 void AMyCharacter::Tick(float DeltaTime)
@@ -108,7 +112,7 @@ void AMyCharacter::ToggleSprint()
 
 bool AMyCharacter::CanFire()
 {
-	if (isScoped == true)
+	if (isScoped == true && (CurrentBullets > 0) && !(isReloading))
 	{
 		return true;
 	}
@@ -130,6 +134,8 @@ void AMyCharacter::Fire()
 {
 	if (CanFire())
 	{
+		CurrentBullets--;
+		UpdateBulletCountUI();
 		FVector StartVector = CameraComponent->GetComponentLocation();
 		FVector EndVector = StartVector + (CameraComponent->GetForwardVector() * RifleRangeUnits);
 
@@ -185,6 +191,7 @@ void AMyCharacter::Reload(E_ReloadState ReceivedReloadState)
 		{
 			if (GunSkeletalMesh != nullptr)
 			{
+				isReloading = true;
 				MagazineComponent = GunSkeletalMesh->GetChildComponent(0);
 				MagazineComponent->AttachToComponent(BodySkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("ReloadMagazineSocket"));
 			}
@@ -215,7 +222,10 @@ void AMyCharacter::Reload(E_ReloadState ReceivedReloadState)
 		{
 			if (GunSkeletalMesh != nullptr)
 			{
+				CurrentBullets = MaxBullets;
 				MagazineActorRef->AttachToComponent(GunSkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("CustomMagazine"));
+				UpdateBulletCountUI();
+				isReloading = false;
 			}
 		}
 		break;
