@@ -36,4 +36,7 @@ private:
 public:
 	void PlayDeadPart();
 	class AAIController* ReturnZombieAIController();
+	
+	UFUNCTION()
+	void AttackPlayer();
 };

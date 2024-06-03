@@ -98,3 +98,9 @@ AAIController* AZombieCharacter::ReturnZombieAIController()
 		return nullptr;
 	}
 }
+
+void AZombieCharacter::AttackPlayer()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Working"));
+	// Play anim montage;
+}
