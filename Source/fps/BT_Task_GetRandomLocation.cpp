@@ -1,11 +1,11 @@
-#include "BT_Task_MoveZombieRandomLocation.h"
+#include "BT_Task_GetRandomLocation.h"
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "MyCharacter.h"
 #include "DrawDebugHelpers.h"
 
-EBTNodeResult::Type UBT_Task_MoveZombieRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory)
+EBTNodeResult::Type UBT_Task_GetRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory)
 {
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0)->GetWorld());
 
@@ -23,7 +23,7 @@ EBTNodeResult::Type UBT_Task_MoveZombieRandomLocation::ExecuteTask(UBehaviorTree
 	return EBTNodeResult::Failed;
 }
 
-//void UBT_Task_MoveZombieRandomLocation::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+//void UBT_Task_GetRandomLocation::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 //{
 //	UObject* TargetActorObject = OwnerComp.GetBlackboardComponent()->GetValueAsObject("TargetActor");
 //

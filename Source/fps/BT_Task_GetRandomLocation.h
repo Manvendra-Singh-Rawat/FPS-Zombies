@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlueprintBase.h"
-#include "BT_Task_MoveZombieRandomLocation.generated.h"
+#include "BT_Task_GetRandomLocation.generated.h"
 
 UCLASS()
-class FPS_API UBT_Task_MoveZombieRandomLocation : public UBTTask_BlueprintBase
+class FPS_API UBT_Task_GetRandomLocation : public UBTTask_BlueprintBase
 {
 	GENERATED_BODY()
 
