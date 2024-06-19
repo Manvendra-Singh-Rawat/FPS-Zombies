@@ -22,18 +22,3 @@ EBTNodeResult::Type UBT_Task_GetRandomLocation::ExecuteTask(UBehaviorTreeCompone
 
 	return EBTNodeResult::Failed;
 }
-
-//void UBT_Task_GetRandomLocation::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
-//{
-//	UObject* TargetActorObject = OwnerComp.GetBlackboardComponent()->GetValueAsObject("TargetActor");
-//
-//	//if (UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0) == Cast<AMyCharacter>(TargetActorObject))
-//	if (UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0) == Cast<AMyCharacter>(TargetActorObject))
-//	{
-//		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
-//	}
-//	else
-//	{
-//		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
-//	}
-//}

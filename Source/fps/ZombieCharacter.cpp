@@ -72,10 +72,10 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 void AZombieCharacter::PlayDeadPart()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Zombie Character died"));
-	auto asdf = GetComponentByClass<USkeletalMeshComponent>();
-	if (asdf != nullptr)
+	USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
+	if (SkeletalMeshComponent != nullptr)
 	{
-		asdf->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+		SkeletalMeshComponent->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 
 		// PLAY VFX AND SFX
 	}
@@ -87,8 +87,8 @@ void AZombieCharacter::PlayDeadPart()
 
 AAIController* AZombieCharacter::ReturnZombieAIController()
 {
-	auto* ZombieControllers = this->GetController();
-	auto ZombieAIController = Cast<AAIController>(ZombieControllers);
+	AController* ZombieControllers = this->GetController();
+	AAIController* ZombieAIController = Cast<AAIController>(ZombieControllers);
 	if (ZombieAIController != nullptr)
 	{
 		return ZombieAIController;
