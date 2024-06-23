@@ -40,6 +40,6 @@ public:
 	UFUNCTION()
 	void AttackPlayer();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void AhhLoL();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ChangeZombieMoveSpeed(bool Decision);
 };
