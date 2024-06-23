@@ -11,6 +11,26 @@ EBTNodeResult::Type UBT_Task_MoveToLocation::ExecuteTask(UBehaviorTreeComponent&
     {
         return EBTNodeResult::Failed;
     }
+    else
+    {
+        /*AAIController* ZombieAIController = OwnerComp.GetAIOwner();
+        if (ZombieAIController != nullptr)
+        {
+            APawn* ZombiePawn = ZombieAIController->GetPawn();
+            if (ZombiePawn != nullptr)
+            {
+                AZombieCharacter* ZombieCharacter = Cast<AZombieCharacter>(ZombiePawn);
+                if (ZombieCharacter != nullptr)
+                {
+                    ZombieCharacter->AhhLoL();
+                }
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("AI Controller is null"));
+        }*/
+    }
     
     AAIController* ZombieAIController = OwnerComp.GetAIOwner();
 
@@ -24,6 +44,23 @@ void UBT_Task_MoveToLocation::TickTask(UBehaviorTreeComponent& OwnerComp, uint8*
     
     if (UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0) == Cast<AMyCharacter>(TargetActorObject))
     {
+        //AAIController* ZombieAIController = OwnerComp.GetAIOwner();
+        //if (ZombieAIController != nullptr)
+        //{
+        //    APawn* ZombiePawn = ZombieAIController->GetPawn();
+        //    if (ZombiePawn != nullptr)
+        //    {
+        //        AZombieCharacter* ZombieCharacter = Cast<AZombieCharacter>(ZombiePawn);
+        //        if (ZombieCharacter != nullptr)
+        //        {
+        //            ZombieCharacter->AhhLoL();
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    UE_LOG(LogTemp, Error, TEXT("Zombie AI Controlelr is null"));
+        //}
         FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
     }
     else

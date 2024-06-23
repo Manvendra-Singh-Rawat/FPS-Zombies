@@ -39,4 +39,7 @@ public:
 	
 	UFUNCTION()
 	void AttackPlayer();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AhhLoL();
 };

@@ -54,7 +54,6 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 		AAIController* ZombieAIController = ReturnZombieAIController();
 		if (ZombieAIController != nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Player is detected"));
 			ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), SourceActor);
 		}
 	}
@@ -63,7 +62,6 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 		AAIController* ZombieAIController = ReturnZombieAIController();
 		if (ZombieAIController != nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Player is not detected"));
 			ZombieAIController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetActor"), nullptr);
 		}
 	}
@@ -71,7 +69,6 @@ void AZombieCharacter::isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulu
 
 void AZombieCharacter::PlayDeadPart()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Zombie Character died"));
 	USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>();
 	if (SkeletalMeshComponent != nullptr)
 	{
