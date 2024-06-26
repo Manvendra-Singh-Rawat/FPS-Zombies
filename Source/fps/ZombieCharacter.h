@@ -37,7 +37,7 @@ public:
 	void PlayDeadPart();
 	class AAIController* ReturnZombieAIController();
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void AttackPlayer();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)

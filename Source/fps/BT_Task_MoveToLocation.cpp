@@ -15,6 +15,7 @@ EBTNodeResult::Type UBT_Task_MoveToLocation::ExecuteTask(UBehaviorTreeComponent&
     AAIController* ZombieAIController = OwnerComp.GetAIOwner();
 
     ZombieAIController->MoveToLocation(ZombieAIController->GetBlackboardComponent()->GetValueAsVector(FName("RandomMoveToLocation")), 2.0f);
+
     return EBTNodeResult::Succeeded;
 }
 
