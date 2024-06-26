@@ -1,21 +1,37 @@
-#include "BT_Task_AttackPlayer.h"
+#include "AIController.h"
+#include "MyCharacter.h"
 #include "ZombieCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "BT_Task_AttackPlayer.h"
 
 EBTNodeResult::Type UBT_Task_AttackPlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory)
 {
-	APawn* TempPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (TempPawn != nullptr)
+	if (!OwnerComponent.GetAIOwner())
 	{
-		AZombieCharacter* ZombieCharacterRef = Cast<AZombieCharacter>(TempPawn);
-		if (ZombieCharacterRef != nullptr)
+		return EBTNodeResult::Failed;
+	}
+
+	PlayerCharacterRef = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(this->GetWorld(), 0));
+	if (PlayerCharacterRef == nullptr)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	AAIController* ZombieAIController = OwnerComponent.GetAIOwner();
+	if (ZombieAIController != nullptr)
+	{
+		APawn* ZombiePawn = ZombieAIController->GetPawn();
+		if (ZombiePawn != nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Working"));
-			ZombieCharacterRef->AttackPlayer();
-			return EBTNodeResult::Succeeded;
+			ZombieCharacterRef = Cast<AZombieCharacter>(ZombiePawn);
+			if (ZombieCharacterRef == nullptr)
+			{
+				return EBTNodeResult::Failed;
+			}
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("Failed 2"));
 			return EBTNodeResult::Failed;
 		}
 	}
@@ -23,4 +39,6 @@ EBTNodeResult::Type UBT_Task_AttackPlayer::ExecuteTask(UBehaviorTreeComponent& O
 	{
 		return EBTNodeResult::Failed;
 	}
+	
+	return EBTNodeResult::Succeeded;
 }

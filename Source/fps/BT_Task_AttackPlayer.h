@@ -11,4 +11,8 @@ class FPS_API UBT_Task_AttackPlayer : public UBTTask_BlueprintBase
 	
 private:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComponent, uint8* NodeMemory) override;
+
+private:
+	class AZombieCharacter* ZombieCharacterRef;
+	class AMyCharacter* PlayerCharacterRef;
 };
