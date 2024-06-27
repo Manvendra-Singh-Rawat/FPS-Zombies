@@ -29,6 +29,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	class UWidgetComponent* HealthBarWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation Instance")
+	UAnimInstance* ZombieAnimationInstance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation Montage")
+	TArray<UAnimMontage*> ZombieAttackAnimMontage;
+
 private:
 	UFUNCTION()
 	void isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus);
@@ -39,6 +44,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void AttackPlayer();
+	UFUNCTION(BlueprintCallable)
+	void ApplyDamageToPlayer();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ChangeZombieMoveSpeed(bool Decision);

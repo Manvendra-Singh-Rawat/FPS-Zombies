@@ -98,6 +98,14 @@ AAIController* AZombieCharacter::ReturnZombieAIController()
 
 void AZombieCharacter::AttackPlayer()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("ATTACK PLAYER"));
-	// Play anim montage;
+	if (ZombieAttackAnimMontage.Num() >= 1 && ZombieAnimationInstance != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NOT NULL"));
+		ZombieAnimationInstance->Montage_Play(ZombieAttackAnimMontage[FMath::RandRange(0, 3)]);
+	}
+}
+
+void AZombieCharacter::ApplyDamageToPlayer()
+{
+	UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(this->GetWorld(), 0), 5.0f, GetInstigator()->GetController(), this, UDamageType::StaticClass());
 }
