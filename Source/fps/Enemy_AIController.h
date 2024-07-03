@@ -20,4 +20,7 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	class UBehaviorTree* EnemyBehaviorTree;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void KillBehaviorTree();
 };

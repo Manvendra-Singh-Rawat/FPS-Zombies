@@ -40,6 +40,8 @@ public:
 	bool isScoped;
 	FTimerHandle ADS_TimerHandler;
 	bool isSprinting;
+
+	bool isPlayerDead;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shooting")
 	int CurrentBullets;
@@ -69,6 +71,9 @@ public:
 	bool isHit;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shooting")
 	bool isReloading;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation Montage")
+	TArray<UAnimMontage*> PlayerDeathAnimMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
 	class UNiagaraSystem* MuzzleFlash_VFX;
@@ -101,4 +106,7 @@ public:
 	void PlayDeadPart();
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateBulletCountUI();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayerMeshRagdall();
 };

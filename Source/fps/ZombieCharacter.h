@@ -34,6 +34,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation Montage")
 	TArray<UAnimMontage*> ZombieAttackAnimMontage;
 
+	FTimerHandle ZombieDeathDespawnHandler;
+
 private:
 	UFUNCTION()
 	void isDetectedPlayer(AActor* SourceActor, FAIStimulus Stimulus);
@@ -49,4 +51,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ChangeZombieMoveSpeed(bool Decision);
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DeathRagdall();
+	void Death();
 };

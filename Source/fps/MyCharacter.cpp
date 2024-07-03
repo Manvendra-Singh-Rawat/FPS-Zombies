@@ -17,6 +17,8 @@ AMyCharacter::AMyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	isPlayerDead = false;
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 350.0f;
@@ -234,5 +236,18 @@ void AMyCharacter::Reload(E_ReloadState ReceivedReloadState)
 
 void AMyCharacter::PlayDeadPart()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Player died T_T"));
+	isPlayerDead = true;
+
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this->GetWorld(), 0);
+	ACharacter* PlayerCharacter = PlayerController->GetCharacter();
+	UAnimInstance* PlayerAnimInstance = PlayerCharacter->GetMesh()->GetAnimInstance();
+	if (PlayerDeathAnimMontage.Num() >= 1 && PlayerAnimInstance != nullptr)
+	{
+		PlayerAnimInstance->Montage_Play(PlayerDeathAnimMontage[FMath::RandRange(0, 2)]);
+	}
+
+	GetWorldTimerManager().ClearTimer(FiringTimerhandler);
+
+	DisableInput(PlayerController);
+	PlayerMeshRagdall();
 }
